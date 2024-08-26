@@ -1,4 +1,5 @@
 I followed this [Youtube tutorial](https://www.youtube.com/watch?feature=shared&v=wm5gMKuwSYk) to learn building a full-stack Next.js app with integration of MongoDB. PromptCentral is an AI prompt sharing system implementing NextAuth where users can share, update and delete prompts.
+Deployed link: https://prompt-central-bllijuvrb-natcccs-projects.vercel.app/
 
 Learning points:
 - Next.js 14 App Folder Structure
