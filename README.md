@@ -7,4 +7,5 @@ Learning points:
 - NextAuth with Google
 - CRUD operations with MongoDB
 - Implement debouncing with clearTimeout to limit excessive funciton call during search filtering
+- Deployment to Vercel
 
