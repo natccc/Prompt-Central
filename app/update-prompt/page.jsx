@@ -48,7 +48,6 @@ const EditPrompt = () => {
     }
   };
   return (
-    <Suspense>
       <Form
         type="Edit"
         post={post}
@@ -56,7 +55,6 @@ const EditPrompt = () => {
         submitting={submitting}
         handleSubmit={updatePrompt}
       />
-    </Suspense>
   );
 };
 
