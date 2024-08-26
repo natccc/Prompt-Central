@@ -1,6 +1,6 @@
-'use client'
-import { useState, useEffect } from "react"
-import PromptCard from "./PromptCard"
+"use client";
+import { useState, useEffect } from "react";
+import PromptCard from "./PromptCard";
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
     <div className="mt-16 prompt_layout">
@@ -12,29 +12,50 @@ const PromptCardList = ({ data, handleTagClick }) => {
         />
       ))}
     </div>
-  )
-}
+  );
+};
 const Feed = () => {
-  const [searchText, setSearchText] = useState("")
-  const [posts, setPosts] = useState([])
+  const [allPosts, setAllPosts] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [searchTimeout, setSearchTimeout] = useState(null);
+  const [searchedResults, setSearchedResults] = useState([]);
 
+  const filterPrompts = (searchText) => {
+    const regex = new RegExp(searchText, "i");
+    return allPosts.filter(
+      (item) =>
+        regex.test(item.creator.username) ||
+        regex.test(item.prompt) ||
+        regex.test(item.tag)
+    );
+  };
   const handleSearchChange = (e) => {
-    
-  }
+    clearTimeout(searchTimeout);
+    setSearchText(e.target.value);
+
+    setSearchTimeout(
+      setTimeout(() => {
+        const searchResult = filterPrompts(searchText);
+        setSearchedResults(searchResult);
+      }, 500)
+    );
+  };
+
+  const handleTagClick = (tag) => {
+    setSearchText(tag);
+  };
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/prompt')
-        const data = await response.json()
-        setPosts(data)
+        const response = await fetch("/api/prompt");
+        const data = await response.json();
+        setAllPosts(data);
+      } catch (error) {
+        console.log(error);
       }
-        
-      catch (error) {
-        console.log(error)
-      }
-    }
-      fetchPosts()
-    }, [])
+    };
+    fetchPosts();
+  }, []);
   return (
     <section className="feed">
       <form className="relative w-full flex-center">
@@ -47,12 +68,16 @@ const Feed = () => {
           onChange={handleSearchChange}
         />
       </form>
-      <PromptCardList
-        data={posts}
-        handleTagClick={() => { }}
-      />
+      {searchText ? (
+        <PromptCardList
+          data={searchedResults}
+          handleTagClick={handleTagClick}
+        />
+      ) : (
+        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
+      )}
     </section>
-  )
-}
+  );
+};
 
-export default Feed
+export default Feed;
